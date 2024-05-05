@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+
+int x[5]={0};
+bool place(int col,int row){
+    for(int curr_col=1;curr_col<=col;curr_col++){
+        if(x[curr_col]==row || abs(x[curr_col]-row)==abs(curr_col-col)){
+            return false;
+        }
+    }
+    return true;
+}
+
+void nqueen(int col,int n){
+    for(int row=1;row<=n;row++){
+        if(place(col,row)){
+            x[col]=row;
+            if(col==n){
+                for (int j = 1; j <= n; j++) {
+                    cout << x[j] << " ";
+                }
+                cout<<endl;
+            }
+             if(col!=n) {
+                nqueen(col + 1, n); 
+             }
+        }
+    }
+}
+
+int main() {
+    nqueen(1,4);
+}
