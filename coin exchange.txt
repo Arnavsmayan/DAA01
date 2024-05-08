@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+int getNumberOfWays(int N, int Coins[], int coinsCount)
+{
+    int ways[N + 1] = {0};
+    ways[0] = 1;
+
+    for (int i = 0; i < coinsCount; i++)
+    {
+        for (int j = Coins[i]; j <= N; j++)
+        {
+            ways[j] += ways[j - Coins[i]];
+        }
+    }
+
+    return ways[N];
+}
+
+void printArray(int coins[], int coinsCount)
+{
+    for (int i = 0; i < coinsCount; i++)
+        cout << coins[i] << "\n";
+}
+
+int main()
+{
+    int Coins[] = {1, 5, 10};
+    int coinsCount = sizeof(Coins) / sizeof(Coins[0]);
+
+    cout << "The Coins Array:" << endl;
+    printArray(Coins, coinsCount);
+
+    cout << "Solution:" << endl;
+    cout << getNumberOfWays(12, Coins, coinsCount) << endl;
+
+    return 0;
+}
