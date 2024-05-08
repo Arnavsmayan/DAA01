@@ -1,0 +1,61 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+#define v 6
+queue<int> q;
+queue<int> final;
+int indegree[v] = {0};
+
+void find_indegree(int graph[v][v]) {
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            if (graph[j][i] == 1) 
+                indegree[i]++;
+        }
+    }
+}
+
+void sort(int graph[v][v]) {
+    find_indegree(graph);
+    for (int i = 0; i < v; i++) {
+        if (indegree[i] == 0) {
+            q.push(i);
+        }
+    }
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        final.push(u);
+        
+        for (int i = 0; i < v; i++) {
+            if (graph[u][i] == 1) {
+                indegree[i]--;
+                if (indegree[i] == 0) {
+                    q.push(i);
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int graph[v][v] = {
+        //{A,B,C,D,E,F},
+        {0, 1, 0, 1, 0, 0},
+        {0, 0, 1, 0, 0, 0},
+        {0, 0, 0, 1, 1, 0},
+        {0, 0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0},
+    };
+    sort(graph);
+    
+    cout << "Topological sorting order: ";
+    while (!final.empty()) {
+        cout << final.front() << " ";
+        final.pop();
+    }
+    cout << endl;
+
+    return 0;
+}
