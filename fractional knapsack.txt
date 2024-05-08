@@ -1,0 +1,38 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+struct Item {
+    int weight;
+    int value;
+};
+
+bool compare(Item a, Item b) {
+    return (a.value * 1.0 / a.weight) > (b.value * 1.0 / b.weight);
+}
+
+double fractional_knapsack(Item items[], int n, int capacity) {
+    sort(items, items + n, compare);
+    double total_value = 0.0;
+    
+    for (int i = 0; i < n && capacity > 0; ++i) {
+        int take = min(capacity, items[i].weight);
+        total_value += take * 1.0 / items[i].weight * items[i].value;
+        capacity -= take;
+    }
+    
+    return total_value;
+}
+
+int main() {
+    Item items[] = {{10, 60}, {20, 100}, {30, 120}};
+    int n = sizeof(items) / sizeof(items[0]);
+    int capacity = 50;
+
+    double max_value = fractional_knapsack(items, n, capacity);
+    
+    cout << "Maximum value obtained: " << max_value << endl;
+    
+    return 0;
+}
