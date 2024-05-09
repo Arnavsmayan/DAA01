@@ -1,35 +1,41 @@
-
-
 #include <bits/stdc++.h>
 using namespace std;
 
-int MatrixChainOrder(int p[], int i, int j)
+int MatrixChainOrder(int p[], int n)
 {
-	if (i == j)
-		return 0;
-	int k;
-	int mini = INT_MAX;
-	int count;
 
-	for (k = i; k < j; k++) 
-	{
-		count = MatrixChainOrder(p, i, k)
-				+ MatrixChainOrder(p, k + 1, j)
-				+ p[i - 1] * p[k] * p[j];
+	int m[5][5]={0};
 
-		mini = min(count, mini);
+	int i, j, k, sum;
+
+	for (i = 1; i <= n; i++){
+		m[i][i] = 0;
 	}
 
-	return mini;
+	
+	for (int L = 2; L <= n; L++) {  
+        for (int i = 1; i <= n - L + 1; i++) { 
+            int j = i + L - 1;  
+            m[i][j] = INT_MAX;
+            for (int k = i; k <= j - 1; k++) { 
+                int sum = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+                if (sum < m[i][j])
+                    m[i][j] = sum;
+            }
+        }
+    }
+
+	return m[1][4];
 }
 
 int main()
 {
-	int arr[] = { 1, 2, 3, 4, 3 };
-	int N = sizeof(arr) / sizeof(arr[0]);
+	int arr[] = {5,4,6,2,7};
+	int size = 4;
 
-	// Function call
 	cout << "Minimum number of multiplications is "
-		<< MatrixChainOrder(arr, 1, N - 1);
+		<< MatrixChainOrder(arr, size);
+
 	return 0;
 }
+
